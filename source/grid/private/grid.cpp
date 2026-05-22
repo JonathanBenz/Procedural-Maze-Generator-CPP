@@ -1,0 +1,76 @@
+#include "../public/grid.h"
+#include "../public/cell.h"
+#include "../public/utils.h"
+
+Grid::Grid() {}
+
+Grid::Grid(unsigned int rows, unsigned int columns)
+{
+	m_Rows = rows;
+	m_Columns = columns;
+
+	PrepareGrid();
+	ConfigureCells();
+}
+
+Grid::~Grid()
+{
+	for (Cell* cell : m_Grid) delete cell;
+}
+
+Cell* Grid::GetCell(int row, int column)
+{
+	if (row < 0 || row > static_cast<int>(m_Rows) - 1) return nullptr;
+	if (column < 0 || column > static_cast<int>(m_Columns) - 1) return nullptr;
+
+	return m_Grid.at(row * m_Columns + column);
+}
+
+const Cell* Grid::GetCell(int row, int column) const
+{
+	if (row < 0 || row > static_cast<int>(m_Rows) - 1) return nullptr;
+	if (column < 0 || column > static_cast<int>(m_Columns) - 1) return nullptr;
+
+	return m_Grid.at(row * m_Columns + column);
+}
+
+Cell* Grid::GetRandomCell()
+{
+	unsigned int randRow = Utils::BoundedRand(m_Rows);
+	unsigned int randColumn = Utils::BoundedRand(m_Columns);
+	return GetCell(randRow, randColumn);
+}
+
+const Cell* Grid::GetRandomCell() const
+{
+	unsigned int randRow = Utils::BoundedRand(m_Rows);
+	unsigned int randColumn = Utils::BoundedRand(m_Columns);
+	return GetCell(randRow, randColumn);
+}
+
+void Grid::PrepareGrid()
+{
+	m_Grid.reserve(m_Rows * m_Columns);
+
+	for (unsigned int row = 0; row < m_Rows; row++)
+	{
+		for (unsigned int column = 0; column < m_Columns; column++)
+		{
+			m_Grid.emplace_back(new Cell(row, column));
+		}
+	}
+}
+
+void Grid::ConfigureCells()
+{
+	for (Cell* cell : m_Grid)
+	{
+		unsigned int row = cell->GetRow();
+		unsigned int column = cell->GetColumn();
+
+		cell->SetNorthNeighbor(GetCell(row - 1, column));
+		cell->SetSouthNeighbor(GetCell(row + 1, column));
+		cell->SetEastNeighbor(GetCell(row, column + 1));
+		cell->SetWestNeighbor(GetCell(row, column - 1));
+	}
+}
