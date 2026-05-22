@@ -17,6 +17,8 @@ int main()
         AlgorithmContext RandomMazeGenerator;
         RandomMazeGenerator.SetStrategy(MazeAlgorithm::BinaryTree);
         RandomMazeGenerator.ExecuteOn(grid);
+
+        std::cout << grid << std::endl;
     }
     // End Of Program
     /* ========================================================= */

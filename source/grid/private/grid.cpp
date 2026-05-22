@@ -1,6 +1,7 @@
 #include "../public/grid.h"
 #include "../public/cell.h"
 #include "../public/utils.h"
+#include <string>
 
 Grid::Grid() {}
 
@@ -73,4 +74,49 @@ void Grid::ConfigureCells()
 		cell->SetEastNeighbor(GetCell(row, column + 1));
 		cell->SetWestNeighbor(GetCell(row, column - 1));
 	}
+}
+
+std::ostream& operator<<(std::ostream& os, const Grid& grid)
+{
+	std::string ASCII("+");
+	for (int i = 0; i < grid.m_Columns; i++) ASCII += "---+";
+	ASCII += "\n";
+
+	for (unsigned int row = 0; row < grid.m_Rows; row++)
+	{
+		std::string top("|");
+		std::string bottom("+");
+		for (unsigned int column = 0; column < grid.m_Columns; column++)
+		{
+			std::string body("   ");
+			std::string eastBoundary;
+			std::string southBoundary;
+			std::string corner("+");
+
+			if (const Cell* cell = grid.GetCell(row, column))
+			{
+				eastBoundary = cell->IsLinked(cell->GetEastNeighbor()) ? " " : "|";
+				southBoundary = cell->IsLinked(cell->GetSouthNeighbor()) ? "   " : "...";
+			}
+
+			else
+			{
+				eastBoundary = "|";
+				southBoundary = "...";
+			}
+
+			top += body;
+			top += eastBoundary;
+			bottom += southBoundary;
+			bottom += corner;
+		}
+
+		ASCII += top;
+		ASCII += "\n";
+		ASCII += bottom;
+		ASCII += "\n";
+	}
+
+	os << ASCII;
+	return os;
 }

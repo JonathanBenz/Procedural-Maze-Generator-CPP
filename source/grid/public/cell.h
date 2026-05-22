@@ -7,7 +7,7 @@ class Cell
 {
 public:
 	Cell() = default;                                                     // Default Constructor
-	Cell(unsigned int row, unsigned int column);                          // Parameterized Constructor
+	Cell(int row, int column);                                            // Parameterized Constructor
 	Cell(const Cell& other) = default;                                    // Copy Constructor
 	Cell& operator=(const Cell& other) = default;                         // Copy Assignment
 	Cell(Cell&&) noexcept = default;                                      // Move Constructor
@@ -21,10 +21,10 @@ public:
 
 public: // GETTERS & SETTERS
 	void GetLinks() const;
-	bool IsLinked(Cell* cell);
+	bool IsLinked(Cell* cell) const;
 
-	unsigned int GetRow() const { return m_Row; }
-	unsigned int GetColumn() const { return m_Column; }
+	int GetRow() const { return m_Row; }
+	int GetColumn() const { return m_Column; }
 
 	Cell* GetNorthNeighbor() const { return m_North; }
 	Cell* GetSouthNeighbor() const { return m_South; }
@@ -38,8 +38,8 @@ public: // GETTERS & SETTERS
 	void SetWestNeighbor(Cell* cell) { m_West = cell; }
 
 private:
-	unsigned int m_Row{};
-	unsigned int m_Column{};
+	int m_Row{};
+	int m_Column{};
 
 	Cell* m_North = nullptr;
 	Cell* m_South = nullptr;

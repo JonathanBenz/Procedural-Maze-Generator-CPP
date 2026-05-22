@@ -1,5 +1,6 @@
 #pragma once
 #include <vector>
+#include<ostream>
 
 class Cell;
 
@@ -9,13 +10,14 @@ public:
 	Grid();
 	Grid(unsigned int rows, unsigned int columns);
 	virtual ~Grid();
+	friend std::ostream& operator<<(std::ostream& os, const Grid& grid);
 
 	template <typename Func>
 	void EachRow(Func&& fn)
 	{
 		for (unsigned int row = 0; row < m_Rows; row++)
 		{
-			fn(row);
+			fn(GetCell(row, 0));
 		}
 	}
 

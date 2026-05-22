@@ -1,7 +1,7 @@
 #include "../public/cell.h"
 #include <iostream>
 
-Cell::Cell(unsigned int row, unsigned int column)
+Cell::Cell(int row, int column)
 {
 	m_Row = row;
 	m_Column = column;
@@ -55,7 +55,7 @@ void Cell::GetLinks() const
 	std::cout << ">" << std::endl;
 }
 
-bool Cell::IsLinked(Cell* cell)
+bool Cell::IsLinked(Cell* cell) const
 {
 	// The find() method returns an iterator to the element if it exists. 
 	// If it does not exist, it returns the end() iterator. 
