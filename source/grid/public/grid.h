@@ -1,13 +1,13 @@
 #pragma once
 #include <vector>
-#include<ostream>
+#include <ostream>
 
 class Cell;
 
 class Grid
 {
 public:
-	Grid();
+	Grid() = default;
 	Grid(unsigned int rows, unsigned int columns);
 	virtual ~Grid();
 	friend std::ostream& operator<<(std::ostream& os, const Grid& grid);
@@ -17,16 +17,18 @@ public:
 	{
 		for (unsigned int row = 0; row < m_Rows; row++)
 		{
-			fn(GetCell(row, 0));
+			fn(*this, GetCell(row, 0));
 		}
 	}
+
+	std::vector<Cell*> GetCellRow(unsigned int row);
 
 	template <typename Func>
 	void EachCell(Func&& fn)
 	{
 		for (Cell* cell : m_Grid)
 		{
-			fn(cell);
+			fn(*this, cell);
 		}
 	}
 

@@ -1,5 +1,6 @@
 #pragma once
 #include <random>
+#include <vector>
 
 class Utils
 {
@@ -16,5 +17,19 @@ public:
 	{
 		std::uniform_int_distribution<T> dist(0, Range - 1);
 		return dist(GetRNG());
+	}
+
+	// 50/50 chance to return true.
+	static bool FlipCoin()
+	{
+		return BoundedRand(2) == 0;
+	}
+
+	// Randomly pick an element from a vector of pointers
+	template <typename T>
+	static T* Sample(const std::vector<T*>& vec)
+	{
+		if (vec.empty()) return nullptr;
+		return vec.at((Utils::BoundedRand(vec.size())));
 	}
 };

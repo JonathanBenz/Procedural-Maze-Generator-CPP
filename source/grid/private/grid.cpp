@@ -1,9 +1,7 @@
 #include "../public/grid.h"
 #include "../public/cell.h"
-#include "../public/utils.h"
+#include "../../utils.h"
 #include <string>
-
-Grid::Grid() {}
 
 Grid::Grid(unsigned int rows, unsigned int columns)
 {
@@ -35,6 +33,18 @@ const Cell* Grid::GetCell(int row, int column) const
 	return m_Grid.at(row * m_Columns + column);
 }
 
+std::vector<Cell*> Grid::GetCellRow(unsigned int row)
+{
+	std::vector<Cell*> cellRow;
+	if (static_cast<int>(row) < 0 || row > m_Rows - 1) return cellRow;
+
+	cellRow.reserve(static_cast<size_t>(m_Columns));
+	for (unsigned int column = 0; column < m_Columns; column++)
+		cellRow.push_back(GetCell(row, column));
+	
+	return cellRow;
+}
+
 Cell* Grid::GetRandomCell()
 {
 	unsigned int randRow = Utils::BoundedRand(m_Rows);
@@ -51,7 +61,7 @@ const Cell* Grid::GetRandomCell() const
 
 void Grid::PrepareGrid()
 {
-	m_Grid.reserve(m_Rows * m_Columns);
+	m_Grid.reserve(static_cast<size_t>(m_Rows * m_Columns));
 
 	for (unsigned int row = 0; row < m_Rows; row++)
 	{
@@ -78,14 +88,14 @@ void Grid::ConfigureCells()
 
 std::ostream& operator<<(std::ostream& os, const Grid& grid)
 {
-	std::string ASCII("+");
-	for (int i = 0; i < grid.m_Columns; i++) ASCII += "---+";
+	std::string ASCII("\n   +");
+	for (unsigned int i = 0; i < grid.m_Columns; i++) ASCII += "---+";
 	ASCII += "\n";
 
 	for (unsigned int row = 0; row < grid.m_Rows; row++)
 	{
-		std::string top("|");
-		std::string bottom("+");
+		std::string top("   |");
+		std::string bottom("   +");
 		for (unsigned int column = 0; column < grid.m_Columns; column++)
 		{
 			std::string body("   ");
@@ -96,13 +106,13 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid)
 			if (const Cell* cell = grid.GetCell(row, column))
 			{
 				eastBoundary = cell->IsLinked(cell->GetEastNeighbor()) ? " " : "|";
-				southBoundary = cell->IsLinked(cell->GetSouthNeighbor()) ? "   " : "...";
+				southBoundary = cell->IsLinked(cell->GetSouthNeighbor()) ? "   " : "---";
 			}
 
 			else
 			{
 				eastBoundary = "|";
-				southBoundary = "...";
+				southBoundary = "---";
 			}
 
 			top += body;

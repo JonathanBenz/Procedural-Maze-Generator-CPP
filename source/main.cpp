@@ -12,10 +12,10 @@ int main()
     /* ========================================================= */
     // Insert Main Code Here
     {
-        Grid grid(4, 4);
+        Grid grid(5, 5);
 
         AlgorithmContext RandomMazeGenerator;
-        RandomMazeGenerator.SetStrategy(MazeAlgorithm::BinaryTree);
+        RandomMazeGenerator.SetStrategy(MazeAlgorithm::Sidewinder);
         RandomMazeGenerator.ExecuteOn(grid);
 
         std::cout << grid << std::endl;

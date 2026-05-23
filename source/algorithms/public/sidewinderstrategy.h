@@ -1,7 +1,7 @@
 #pragma once
 #include "../public/imazealgorithms.h"
 
-class BinaryTreeStrategy : public IMazeAlgorithm
+class SidewinderStrategy : public IMazeAlgorithm
 {
 public:
 	virtual void GenerateMaze(Grid& grid) override;

@@ -1,18 +1,18 @@
 #include "../public/binarytreestrategy.h"
 #include "../../grid/public/grid.h"
 #include "../../grid/public/cell.h"
-#include "../../grid/public/utils.h"
+#include "../../utils.h"
 #include <vector>
 
 void BinaryTreeStrategy::GenerateMaze(Grid& grid)
 {
-	grid.EachCell([this](Cell* cell) // Pass lambda (internally a functor) as argument
+	grid.EachCell([this](Grid& grid, Cell* cell) // Pass lambda (internally a functor) as argument
 		{
-			ApplyAlgorithm(cell);
+			ApplyAlgorithm(grid, cell);
 		});
 }
 
-void BinaryTreeStrategy::ApplyAlgorithm(Cell* cell)
+void BinaryTreeStrategy::ApplyAlgorithm(Grid& grid, Cell* cell)
 {
 	if (!cell) return;
 
