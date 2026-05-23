@@ -13,8 +13,6 @@ int main()
     _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 
 	if (Graphics::InitOpenGL() == -1) return -1;
-	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_FRAMEBUFFER_SRGB);
 
     /* ========================================================= */
     /* Insert Main Code Here */
@@ -26,11 +24,14 @@ int main()
         RandomMazeGenerator.ExecuteOn(grid);
 
         std::cout << grid << std::endl;
+        grid.UploadVertices();
 
+        Graphics::InitShader();
         Graphics::UpdateLoop();
     }
     /* End Of Program */
     /* ========================================================= */
-    glfwTerminate();
+
+    Graphics::CleanUp();
     _CrtDumpMemoryLeaks();
 }

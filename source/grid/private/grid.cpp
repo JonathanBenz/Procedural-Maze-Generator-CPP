@@ -1,12 +1,15 @@
 #include "../public/grid.h"
 #include "../public/cell.h"
 #include "../../utils.h"
+#include "../../graphics/public/graphics.h"
 #include <string>
 
 Grid::Grid(unsigned int rows, unsigned int columns)
 {
 	m_Rows = rows;
 	m_Columns = columns;
+	Graphics::Rows = static_cast<float>(rows);
+	Graphics::Columns = static_cast<float>(columns);
 
 	PrepareGrid();
 	ConfigureCells();
@@ -129,4 +132,25 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid)
 
 	os << ASCII;
 	return os;
+}
+
+void Grid::UploadVertices()
+{
+	Graphics::Vertices.clear();
+
+	for (Cell* cell : m_Grid)
+	{
+		// Calculate vertices
+		float x1 = static_cast<float>(cell->GetColumn());
+		float y1 = static_cast<float>(cell->GetRow());
+		float x2 = static_cast<float>(cell->GetColumn() + 1);
+		float y2 = static_cast<float>(cell->GetRow() + 1);
+
+		// Add Lines
+		if (!cell->GetNorthNeighbor()) Graphics::AddLine(x1, y1, x2, y1);
+		if (!cell->GetWestNeighbor()) Graphics::AddLine(x1, y1, x1, y2);
+
+		if (!cell->IsLinked(cell->GetEastNeighbor())) Graphics::AddLine(x2, y1, x2, y2);
+		if (!cell->IsLinked(cell->GetSouthNeighbor())) Graphics::AddLine(x1, y2, x2, y2);
+	}
 }

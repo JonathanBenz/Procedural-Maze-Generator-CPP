@@ -4,7 +4,12 @@
 #include <sstream>
 #include <fstream>
 
-Shader::Shader(const char* vertexPath, const char* fragmentPath)
+Shader::~Shader()
+{
+	if (ID != 0) glDeleteProgram(ID);
+}
+
+void Shader::SetupShader(const char* vertexPath, const char* fragmentPath)
 {
 	// 1. Retrive vertex/ fragment shader source code from file path
 	std::string vertexCode;

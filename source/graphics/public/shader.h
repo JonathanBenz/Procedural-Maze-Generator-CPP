@@ -6,7 +6,10 @@ class Shader
 public:
 	unsigned int ID;
 
-	Shader(const char* vertexPath, const char* fragmentPath);
+	Shader() = default;
+	~Shader();
 
 	inline void use() { glUseProgram(ID); }
+
+	void SetupShader(const char* vertexPath, const char* fragmentPath);
 };

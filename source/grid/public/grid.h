@@ -11,6 +11,7 @@ public:
 	Grid(unsigned int rows, unsigned int columns);
 	virtual ~Grid();
 	friend std::ostream& operator<<(std::ostream& os, const Grid& grid);
+	void UploadVertices();
 
 	template <typename Func>
 	void EachRow(Func&& fn)
