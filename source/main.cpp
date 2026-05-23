@@ -4,6 +4,7 @@
 #include <crtdbg.h>        // For dumping memory leaks
 #include "utils.h"
 #include "grid/public/grid.h"
+#include "graphics/public/graphics.h"
 #include "algorithms/public/algorithmcontext.h"
 
 int main()
@@ -11,7 +12,7 @@ int main()
     _CrtSetReportMode(_CRT_WARN, _CRTDBG_MODE_FILE);
     _CrtSetReportFile(_CRT_WARN, _CRTDBG_FILE_STDOUT);
 
-	if (Utils::InitOpenGL() == -1) return -1;
+	if (Graphics::InitOpenGL() == -1) return -1;
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_FRAMEBUFFER_SRGB);
 
@@ -26,7 +27,7 @@ int main()
 
         std::cout << grid << std::endl;
 
-        Utils::UpdateLoop();
+        Graphics::UpdateLoop();
     }
     /* End Of Program */
     /* ========================================================= */
