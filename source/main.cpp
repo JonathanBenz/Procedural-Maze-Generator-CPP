@@ -1,9 +1,9 @@
 #include <iostream>
+#include "app.h"
 #include "utils.h"
 #include "grid/public/grid.h"
 #include "graphics/public/graphics.h"
 #include "algorithms/public/algorithmcontext.h"
-#include "app.h"
 
 int main()
 {

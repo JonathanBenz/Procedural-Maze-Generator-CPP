@@ -47,7 +47,7 @@ public:
 		// Initialize the viewport
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
-		// Set a callback function for resizing the window
+		// Set a callback functions for resizing the window and detecting key inputs
 		glfwSetFramebufferSizeCallback(Window, FramebufferSizeCallback);
 		glfwSetKeyCallback(Window, KeyCallback);
 		
@@ -59,29 +59,26 @@ public:
 
 	static void InitShader()
 	{
-		Shader shader;
-		shader.SetupShader("shaders/vertex.vert", "shaders/fragment.frag");
+		MazeShader.SetupShader("shaders/vertex.vert", "shaders/fragment.frag");
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
 		glBindVertexArray(VAO);
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), Vertices.data(), GL_DYNAMIC_DRAW);
-		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 		glEnableVertexAttribArray(0);
-		shader.use();
+		glVertexAttribPointer(0, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)0);
 	}
 
 	static void UpdateLoop()
 	{
 		while (!glfwWindowShouldClose(Window))
 		{
-			// Get user input
-			ProcessInput(Window);
-
 			// Render stuff here... 
 			glClearColor(0.f, 0.f, 0.f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+			MazeShader.use();
+			MazeShader.setFloat("uTime", glfwGetTime());
 			glBindVertexArray(VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), Vertices.data(), GL_DYNAMIC_DRAW);
@@ -125,30 +122,30 @@ private:
 
 	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
 	{
-		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // ESC
+			glfwSetWindowShouldClose(window, true);
+
+		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) // SPACEBAR
 		{
 			App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
 			app->RegenerateMaze();
 		}
 	}
 
-	static void ProcessInput(GLFWwindow* window)
-	{
-		if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS) // ESC
-			glfwSetWindowShouldClose(window, true);
-	}
-
+	// Converts from Maze Space into normalized Clip Space in the X dimension
 	static float NormalizeX(float x)
 	{
 		return MinClip + (x / Columns) * (MaxClip - MinClip);
 	}
 
+	// Converts from Maze Space into normalized Clip Space in the Y dimension
 	static float NormalizeY(float y)
 	{
 		return MaxClip - (y / Rows) * (MaxClip - MinClip);
 	}
 
 private:
-	static constexpr float MinClip = -0.9f;
-	static constexpr float MaxClip = 0.9f;
+	inline static Shader MazeShader;
+	static constexpr float MinClip = -0.9f; // Maze bounds cannot extend past -0.9 in clipspace XY dimensions
+	static constexpr float MaxClip = 0.9f; // Maze bounds cannot extend past +0.9 in clipspace XY dimensions
 };
