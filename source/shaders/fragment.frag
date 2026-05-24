@@ -9,7 +9,7 @@ float random (vec2 st)
 
 vec3 random_color () 
 {
-    vec2 st = gl_FragCoord.xy;
+    vec2 st = gl_FragCoord.xy / 16.0;
     float R = random(floor(st * 1.0));
     float G = random(floor(st * 1.1));
     float B = random(floor(st * 0.9));
@@ -18,8 +18,8 @@ vec3 random_color ()
 
 void main()
 {
-    //vec3 color = random_color();
-    vec3 color = vec3(0.0, 0.68, 0.0); // hacker green
+    vec3 color = random_color();
+    //vec3 color = vec3(0.0, 0.68, 0.0); // hacker green
 
     FragColor = vec4(color, 1.0);
 }

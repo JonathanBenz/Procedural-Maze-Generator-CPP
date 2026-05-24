@@ -6,6 +6,7 @@
 
 void SidewinderStrategy::GenerateMaze(Grid& grid)
 {
+	ResetAllCells(grid);
 	grid.EachRow([this](Grid& grid, Cell* cell)
 		{
 			ApplyAlgorithm(grid, cell);

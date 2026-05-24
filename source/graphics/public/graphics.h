@@ -6,6 +6,7 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtc/constants.hpp>
+#include "../../app.h"
 #include "shader.h"
 
 struct Vertex
@@ -47,7 +48,8 @@ public:
 		glViewport(0, 0, SCR_WIDTH, SCR_HEIGHT);
 
 		// Set a callback function for resizing the window
-		glfwSetFramebufferSizeCallback(Window, framebuffer_size_callback);
+		glfwSetFramebufferSizeCallback(Window, FramebufferSizeCallback);
+		glfwSetKeyCallback(Window, KeyCallback);
 		
 		// Enable depth testing 
 		glEnable(GL_DEPTH_TEST);
@@ -80,7 +82,6 @@ public:
 			glClearColor(0.f, 0.f, 0.f, 1.0f);
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-			//_Shader.use();
 			glBindVertexArray(VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), Vertices.data(), GL_DYNAMIC_DRAW);
@@ -102,6 +103,7 @@ public:
 	{
 		glDeleteVertexArrays(1, &VAO);
 		glDeleteBuffers(1, &VBO);
+		glfwDestroyWindow(Window);
 		glfwTerminate();
 	}
 
@@ -116,9 +118,18 @@ public:
 	inline static std::vector<Vertex> Vertices;
 
 private:
-	static void framebuffer_size_callback(GLFWwindow* window, int width, int height)
+	static void FramebufferSizeCallback(GLFWwindow* window, int width, int height)
 	{
 		glViewport(0, 0, width, height);
+	}
+
+	static void KeyCallback(GLFWwindow* window, int key, int scancode, int action, int mods)
+	{
+		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS)
+		{
+			App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
+			app->RegenerateMaze();
+		}
 	}
 
 	static void ProcessInput(GLFWwindow* window)

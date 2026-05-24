@@ -6,6 +6,7 @@
 
 void BinaryTreeStrategy::GenerateMaze(Grid& grid)
 {
+	ResetAllCells(grid);
 	grid.EachCell([this](Grid& grid, Cell* cell) // Pass lambda (internally a functor) as argument
 		{
 			ApplyAlgorithm(grid, cell);
