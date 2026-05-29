@@ -31,11 +31,25 @@ void main()
     //vec3 color = vec3(0.0, 0.68, 0.0); // hacker green
 
     vec2 uv = floor(gl_FragCoord.xy / 32.0);
-    float randomDiscreteGreens = random(uv + DiscreteTimeUpdate(4.0));
-    float randomContinuousGreens = 0.8 + 0.5 * sin(uTime + random(floor(uv)) * 10.0);
+    float randomDiscrete = random(uv + DiscreteTimeUpdate(4.0));
+    float randomContinuous = 0.75 + 0.5 * sin(uTime + random(floor(uv)) * 10.0);
 
-    //vec3 color = vec3(0.0, randomDiscreteGreens, 0.0); // Random greens only (Discrete)
-    vec3 color = vec3(0.0, randomContinuousGreens, 0.0); // Random greens only (Continuous)
+    //vec3 color = vec3(0.0, randomDiscrete, 0.0); // Random greens only (Discrete)
+    //vec3 color = vec3(0.0, randomContinuous, 0.0); // Random greens only (Continuous)
+
+    //vec3 color = vec3(randomContinuous * 2.0, randomContinuous, randomContinuous * 0.5); // Random continuous gold and silver
+    
+    vec2 uv_alt = floor(gl_FragCoord.xy / 64.0);
+    float randomContinuousR = 0.7 + 0.5 * sin(uTime * 5.0 + random(floor(uv_alt)) * 100.0);
+    float randomContinuousG = 0.7 + 0.5 * sin(uTime * 2.5 + random(floor(uv_alt)) * 10.0);
+    float randomContinuousB = 0.7 + 0.5 * sin(uTime * 3.75 + random(floor(uv_alt)) * 50.0);
+
+    float randomDiscreteR = random(uv_alt + DiscreteTimeUpdate(3.0));
+    float randomDiscreteG = random(uv_alt + DiscreteTimeUpdate(4.0));
+    float randomDiscreteB = random(uv_alt + DiscreteTimeUpdate(6.0));
+    
+    //vec3 color = vec3(randomDiscreteR, randomContinuousG, randomDiscreteB); // Discrete RGB
+    vec3 color = vec3(randomContinuousR, randomContinuousG, randomContinuousB); // Continuous RGB
 
     FragColor = vec4(color, 1.0);
 }

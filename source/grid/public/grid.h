@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include <ostream>
+#include <string>
 
 class Cell;
 
@@ -38,15 +39,17 @@ public: // GETTERS & SETTERS
 	unsigned int GetTotalColumns() const { return m_Columns; }
 	unsigned int GetSize() const { return m_Rows * m_Columns; }
 
+	virtual Cell* GetCell(int row, int column);
+	virtual const Cell* GetCell(int row, int column) const;
+
 	Cell* GetRandomCell();
 	const Cell* GetRandomCell() const;
 
 protected:
 	virtual void PrepareGrid();
 	virtual void ConfigureCells();
-
-	virtual Cell* GetCell(int row, int column);
-	virtual const Cell* GetCell(int row, int column) const;
+	
+	virtual std::string GetContentsOf(const Cell* cell) const;
 
 private:
 	unsigned int m_Rows{};

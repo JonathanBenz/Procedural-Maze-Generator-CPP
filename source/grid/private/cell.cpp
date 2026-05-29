@@ -1,5 +1,7 @@
 #include "../public/cell.h"
+#include "../public/distances.h"
 #include <iostream>
+#include <vector>
 
 Cell::Cell(int row, int column)
 {
@@ -48,7 +50,33 @@ std::vector<Cell*> Cell::GetNeighbors() const
 	return list;
 }
 
-void Cell::GetLinks() const
+Distances Cell::GetDistancesFromThisCell()
+{
+	Distances distances(this);
+	std::vector<Cell*> frontier({ this });
+
+	while (!frontier.empty())
+	{
+		std::vector<Cell*> newFrontier;
+		for (Cell* cell : frontier)
+		{
+			for (Cell* linked : cell->m_Links)
+			{
+				// Skip cells that have already been visited
+				if (distances.GetDistanceFrom(linked) != -1) continue; 
+
+				distances.SetDistance(linked, distances.GetDistanceFrom(cell) + 1);
+				newFrontier.push_back(linked);
+			}
+		}
+
+		frontier = newFrontier;
+	}
+
+	return distances;
+}
+
+void Cell::PrintLinks() const
 {
 	std::cout << "<";
 	for (const Cell* cell : m_Links) std::cout << cell << ", ";

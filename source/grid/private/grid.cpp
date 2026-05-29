@@ -2,7 +2,6 @@
 #include "../public/cell.h"
 #include "../../utils.h"
 #include "../../graphics/public/graphics.h"
-#include <string>
 
 Grid::Grid(unsigned int rows, unsigned int columns)
 {
@@ -34,6 +33,11 @@ const Cell* Grid::GetCell(int row, int column) const
 	if (column < 0 || column > static_cast<int>(m_Columns) - 1) return nullptr;
 
 	return m_Grid.at(row * m_Columns + column);
+}
+
+std::string Grid::GetContentsOf(const Cell* cell) const
+{
+	return " ";
 }
 
 std::vector<Cell*> Grid::GetCellRow(unsigned int row)
@@ -108,6 +112,7 @@ std::ostream& operator<<(std::ostream& os, const Grid& grid)
 
 			if (const Cell* cell = grid.GetCell(row, column))
 			{
+				body = " " + grid.GetContentsOf(cell) + " ";
 				eastBoundary = cell->IsLinked(cell->GetEastNeighbor()) ? " " : "|";
 				southBoundary = cell->IsLinked(cell->GetSouthNeighbor()) ? "   " : "---";
 			}

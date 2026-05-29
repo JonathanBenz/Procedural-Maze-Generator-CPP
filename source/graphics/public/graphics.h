@@ -78,7 +78,7 @@ public:
 			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
 			MazeShader.use();
-			MazeShader.setFloat("uTime", glfwGetTime());
+			MazeShader.setFloat("uTime", static_cast<float>(glfwGetTime()));
 			glBindVertexArray(VAO);
 			glBindBuffer(GL_ARRAY_BUFFER, VBO);
 			glBufferData(GL_ARRAY_BUFFER, Vertices.size() * sizeof(Vertex), Vertices.data(), GL_DYNAMIC_DRAW);
@@ -128,7 +128,7 @@ private:
 		if (key == GLFW_KEY_SPACE && action == GLFW_PRESS) // SPACEBAR
 		{
 			App* app = static_cast<App*>(glfwGetWindowUserPointer(window));
-			app->RegenerateMaze();
+			app->GenerateMaze();
 		}
 	}
 

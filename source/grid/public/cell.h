@@ -3,6 +3,8 @@
 #include <unordered_set>
 #include <vector>
 
+class Distances;
+
 class Cell
 {
 public:
@@ -18,11 +20,11 @@ public:
 
 	Cell* Link(Cell* cell, bool bidirectional = true);
 	Cell* Unlink(Cell* cell, bool bidirectional = true);
+	void PrintLinks() const;
 
 public: // GETTERS & SETTERS
-	void GetLinks() const;
 	bool IsLinked(Cell* cell) const;
-
+	std::unordered_set<Cell*> GetLinks() { return m_Links; }
 	int GetRow() const { return m_Row; }
 	int GetColumn() const { return m_Column; }
 
@@ -31,6 +33,8 @@ public: // GETTERS & SETTERS
 	Cell* GetEastNeighbor() const { return m_East; }
 	Cell* GetWestNeighbor() const { return m_West; }
 	std::vector<Cell*> GetNeighbors() const;
+
+	Distances GetDistancesFromThisCell();
 
 	void SetNorthNeighbor(Cell* cell) { m_North = cell; }
 	void SetSouthNeighbor(Cell* cell) { m_South = cell; }
