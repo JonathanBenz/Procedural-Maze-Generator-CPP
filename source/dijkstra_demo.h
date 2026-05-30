@@ -7,6 +7,12 @@
 #include "grid/public/distances.h"
 #include "algorithms/public/algorithmcontext.h"
 
+enum class PathType 
+{ 
+	Shortest, 
+	Longest 
+};
+
 class DijkstraDemo
 {
 public:
@@ -30,16 +36,32 @@ public:
 		m_GoalCell = m_Grid.GetCell(row, column);
 	}
 
-	void RunDemo()
+	void RunShortestPathDemo()
 	{
 		if (!m_StartingCell || !m_GoalCell) return;
-
-		m_App.InitApp(&m_Grid, &m_RandomMazeGenerator);
-		glfwSetWindowUserPointer(Graphics::Window, &m_App);
+		if (!bIsAppInitialized) InitApp();
+		
 		m_App.GenerateMaze();
 
 		Distances distances = m_StartingCell->GetDistancesFromThisCell();
 		m_Grid.SetDistances(distances.PathTo(m_GoalCell));
+		std::cout << m_Grid << std::endl;
+	}
+
+	void RunLongestPathDemo()
+	{
+		if (!m_StartingCell) return;
+		if (!bIsAppInitialized) InitApp();
+
+		m_App.GenerateMaze();
+
+		Distances distances = m_StartingCell->GetDistancesFromThisCell();
+		Cell* newStartCell = distances.GetMaxCell();
+
+		Distances newDistances = newStartCell->GetDistancesFromThisCell();
+		Cell* goalCell = newDistances.GetMaxCell();
+
+		m_Grid.SetDistances(newDistances.PathTo(goalCell));
 		std::cout << m_Grid << std::endl;
 	}
 
@@ -49,4 +71,13 @@ private:
 	App m_App;
 	Cell* m_StartingCell = nullptr;
 	Cell* m_GoalCell = nullptr;
+	bool bIsAppInitialized = false;
+
+private:
+	void InitApp()
+	{
+		m_App.InitApp(&m_Grid, &m_RandomMazeGenerator);
+		glfwSetWindowUserPointer(Graphics::Window, &m_App);
+		bIsAppInitialized = true;
+	}
 };

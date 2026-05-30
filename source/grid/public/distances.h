@@ -16,7 +16,8 @@ public: // Getters and Setters
 	int GetDistanceFrom(const Cell* cell) const;
 
 	Cell* GetMaxCell() const;
-	int GetMaxDistance() const;
+	unsigned int GetMaxDistance() const;
+	std::pair<Cell*, unsigned int> GetMaxCellAndDistance() const;
 
 	void SetDistance(Cell* cell, unsigned int distance);
 

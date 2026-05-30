@@ -9,29 +9,29 @@
 #include "dijkstra_demo.h"
 
 /* Prototype Functions */
-void RunDijkstraDemo();
+void RunDijkstraDemo(PathType pathType);
 /* ******************* */
 
 int main()
 {
 	if (Graphics::InitOpenGL() == -1) return -1;
 
-	Grid grid(8, 8);
+	/*Grid grid(8, 8);
 	AlgorithmContext randomMazeGenerator;
 	App app(&grid, &randomMazeGenerator);
 	glfwSetWindowUserPointer(Graphics::Window, &app);
 	randomMazeGenerator.SetStrategy(MazeAlgorithm::Sidewinder);
 	app.GenerateMaze();
-	std::cout << grid << std::endl;
+	std::cout << grid << std::endl;*/
 
-	// RunDijkstraDemo();
+	//RunDijkstraDemo(PathType::Longest);
 
 	Graphics::InitShader();
 	Graphics::UpdateLoop();
     Graphics::CleanUp();
 }
 
-void RunDijkstraDemo()
+void RunDijkstraDemo(PathType pathType)
 {
 	DijkstraDemo dijkstra;
 	unsigned int rows = 8;
@@ -40,5 +40,15 @@ void RunDijkstraDemo()
 	dijkstra.SetMazeGenAlgorithm(MazeAlgorithm::Sidewinder);
 	dijkstra.SetStartCell(0, 0);
 	dijkstra.SetGoalCell(rows - 1, columns - 1);
-	dijkstra.RunDemo();
+
+	switch (pathType)
+	{
+	case PathType::Shortest:
+		dijkstra.RunShortestPathDemo();
+		break;
+
+	case PathType::Longest:
+		dijkstra.RunLongestPathDemo();
+		break;
+	}
 }

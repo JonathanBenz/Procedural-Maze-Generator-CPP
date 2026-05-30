@@ -1,5 +1,7 @@
 #include "../public/distances.h"
 #include "../public/cell.h"
+#include "../../utils.h"
+#include <iostream>
 
 Distances::Distances(Cell* root)
 {
@@ -58,12 +60,19 @@ int Distances::GetDistanceFrom(const Cell* cell) const
 
 Cell* Distances::GetMaxCell() const
 {
-	return m_Cells.rbegin()->first;
+	std::multimap<unsigned int, Cell*> mapOrderedByDistance = Utils::flip_map(m_Cells);
+	return mapOrderedByDistance.rbegin()->second;
 }
 
-int Distances::GetMaxDistance() const
+unsigned int Distances::GetMaxDistance() const
 {
-	return m_Cells.rbegin()->second;
+	std::multimap<unsigned int, Cell*> mapOrderedByDistance = Utils::flip_map(m_Cells);
+	return mapOrderedByDistance.rbegin()->first;
+}
+
+std::pair<Cell*, unsigned int> Distances::GetMaxCellAndDistance() const
+{
+	return std::pair<Cell*, unsigned int>(GetMaxCell(), GetMaxDistance());
 }
 
 void Distances::SetDistance(Cell* cell, unsigned int distance)
