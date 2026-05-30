@@ -5,6 +5,13 @@
 
 Grid::Grid(unsigned int rows, unsigned int columns)
 {
+	InitGrid(rows, columns);
+}
+
+void Grid::InitGrid(unsigned int rows, unsigned int columns)
+{
+	CleanupGrid();
+
 	m_Rows = rows;
 	m_Columns = columns;
 	Graphics::Rows = static_cast<float>(rows);
@@ -16,7 +23,13 @@ Grid::Grid(unsigned int rows, unsigned int columns)
 
 Grid::~Grid()
 {
+	CleanupGrid();
+}
+
+void Grid::CleanupGrid()
+{
 	for (Cell* cell : m_Grid) delete cell;
+	m_Grid.clear();
 }
 
 Cell* Grid::GetCell(int row, int column)

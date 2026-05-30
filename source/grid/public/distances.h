@@ -14,6 +14,8 @@ public: // Getters and Setters
 	std::vector<Cell*> GetCells();
 	int GetDistanceFrom(Cell* cell);
 	int GetDistanceFrom(const Cell* cell) const;
+
+	Cell* GetMaxCell() const;
 	int GetMaxDistance() const;
 
 	void SetDistance(Cell* cell, unsigned int distance);

@@ -11,6 +11,10 @@ public:
 	Grid() = default;
 	Grid(unsigned int rows, unsigned int columns);
 	virtual ~Grid();
+
+	void InitGrid(unsigned int rows, unsigned int columns);
+	void CleanupGrid();
+
 	friend std::ostream& operator<<(std::ostream& os, const Grid& grid);
 	void UploadVertices();
 

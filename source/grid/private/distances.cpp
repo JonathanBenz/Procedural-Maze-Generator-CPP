@@ -56,6 +56,11 @@ int Distances::GetDistanceFrom(const Cell* cell) const
 	return it != m_Cells.end() ? static_cast<int>(it->second) : -1;
 }
 
+Cell* Distances::GetMaxCell() const
+{
+	return m_Cells.rbegin()->first;
+}
+
 int Distances::GetMaxDistance() const
 {
 	return m_Cells.rbegin()->second;

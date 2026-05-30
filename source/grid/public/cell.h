@@ -34,6 +34,7 @@ public: // GETTERS & SETTERS
 	Cell* GetWestNeighbor() const { return m_West; }
 	std::vector<Cell*> GetNeighbors() const;
 
+	// Using Dijkstra
 	Distances GetDistancesFromThisCell();
 
 	void SetNorthNeighbor(Cell* cell) { m_North = cell; }

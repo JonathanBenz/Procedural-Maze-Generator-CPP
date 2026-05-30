@@ -7,6 +7,7 @@ class Distances;
 class DistanceGrid : public Grid
 {
 public:
+	DistanceGrid() = default;
 	DistanceGrid(unsigned int rows, unsigned int columns) : Grid(rows, columns) {}
 
 	void SetDistances(const Distances& distances);

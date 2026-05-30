@@ -36,8 +36,6 @@ void main()
 
     //vec3 color = vec3(0.0, randomDiscrete, 0.0); // Random greens only (Discrete)
     //vec3 color = vec3(0.0, randomContinuous, 0.0); // Random greens only (Continuous)
-
-    //vec3 color = vec3(randomContinuous * 2.0, randomContinuous, randomContinuous * 0.5); // Random continuous gold and silver
     
     vec2 uv_alt = floor(gl_FragCoord.xy / 64.0);
     float randomContinuousR = 0.7 + 0.5 * sin(uTime * 5.0 + random(floor(uv_alt)) * 100.0);

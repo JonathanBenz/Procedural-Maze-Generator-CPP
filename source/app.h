@@ -6,15 +6,23 @@
 class App
 {
 public:
-    App(Grid& grid, AlgorithmContext& algo) : m_Grid(grid), m_Algo(algo) {}
+    App() = default;
+    App(Grid* grid, AlgorithmContext* algo) : m_Grid(grid), m_Algo(algo) {}
+
+    void InitApp(Grid* grid, AlgorithmContext* algo)
+    {
+        m_Grid = grid;
+        m_Algo = algo;
+    }
+
     void GenerateMaze()
     {
-        m_Algo.ExecuteOn(m_Grid);
-        m_Grid.UploadVertices();
-        //std::cout << m_Grid << std::endl;
+        m_Algo->ExecuteOn(*m_Grid);
+        m_Grid->UploadVertices();
+        //std::cout << *m_Grid << std::endl;
     }
 
 private:
-    Grid& m_Grid;
-    AlgorithmContext& m_Algo;
+    Grid* m_Grid;
+    AlgorithmContext* m_Algo;
 };
